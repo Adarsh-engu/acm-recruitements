@@ -1,47 +1,8 @@
-export default function Page() {
-  return (
-    <main
-      style={{
-        colorScheme: 'light dark',
-        position: 'relative',
-        display: 'flex',
-        minHeight: '100vh',
-        alignItems: 'center',
-        justifyContent: 'center',
-        backgroundColor: 'light-dark(#fff, #000)',
-        color: 'light-dark(#000, #fff)',
-      }}
-    >
-      <svg
-        aria-hidden="true"
-        style={{ width: 80, height: 80 }}
-        width={80}
-        height={80}
-        fill="none"
-        viewBox="0 0 20 20"
-        xmlns="http://www.w3.org/2000/svg"
-        stroke="currentColor"
-        strokeWidth="0.5"
-      >
-        <path
-          d="M14.2 14.2H17V6.9375C17 4.76288 15.2371 3 13.0625 3H5.8V5.8M14.2 14.2V7.79063L7.79062 14.2H14.2ZM14.2 14.2V17H6.9375C4.76288 17 3 15.2371 3 13.0625V5.8H5.8M5.8 5.8V12.2313L12.2313 5.8H5.8Z"
-          strokeLinejoin="round"
-        />
-      </svg>
-      <p
-        style={{
-          position: 'absolute',
-          left: '50%',
-          top: 'calc(50% + 56px)',
-          transform: 'translateX(-50%)',
-          whiteSpace: 'nowrap',
-          fontSize: '14px',
-          fontWeight: 500,
-          color: 'light-dark(#71717a, #a1a1aa)',
-        }}
-      >
-        Your v0 generation will show here.
-      </p>
-    </main>
-  )
+import Link from 'next/link'
+import { ArrowUpRight } from 'lucide-react'
+import { CTA, EventGrid, Faculty, Hero, PageShell, SectionIntro, WhyACM } from '@/components/acm-site'
+import { events } from '@/lib/site-data'
+
+export default function Home() {
+  return <PageShell><Hero /><WhyACM /><section className="mx-auto max-w-7xl px-5 py-16 sm:px-8"><div className="flex flex-col justify-between gap-6 sm:flex-row sm:items-end"><SectionIntro eyebrow="What we&apos;ve been building" title="Ideas, challenges and experiences brought to life." description="A glimpse into the events shaping the ACM GRIET community." /><Link href="/events" className="inline-flex shrink-0 items-center gap-2 text-xs font-bold uppercase tracking-[.15em] text-acm">View all events <ArrowUpRight size={15} /></Link></div><div className="mt-12"><EventGrid items={events.filter(event => event.featured)} /></div></section><Faculty /><CTA /></PageShell>
 }
