@@ -2,7 +2,7 @@ export const siteConfig = {
   name: 'ACM GRIET Student Chapter',
   shortName: 'ACM GRIET',
   institute: 'Gokaraju Rangaraju Institute of Engineering & Technology',
-  recruitmentFormUrl: 'TODO_REPLACE_WITH_GOOGLE_FORM_URL',
+  recruitmentFormUrl: null as string | null,
   instagram: 'https://www.instagram.com/acm_griet',
   linkedin: 'https://www.linkedin.com/company/acm-griet/',
 } as const
@@ -86,7 +86,7 @@ export const events: EventItem[] = [
     time: '10:00 AM – 3:30 PM',
     venue: 'GRIET College, Bachupally, Hyderabad',
     theme: 'Innovation, Learning & Competition',
-    description: 'NOVA brings together technical competition, hands-on learning and conversations around new ways to build with technology.',
+    description: 'NOVA brings together ORBITEX, a technical competition built around logic and problem-solving, and ECLIPSE, an MCP & Agentic AI workshop with hands-on learning and live demonstrations.',
     highlights: ['ORBITEX: logic, creativity, problem-solving, debugging and technical challenges', 'ECLIPSE: MCP & Agentic AI Workshop', 'Team size for ORBITEX: 2–4 members', 'Prize pool: ₹10,000', 'ECLIPSE topics include MCP fundamentals, tools, real-world data and intelligent agent workflows'],
     tags: ['Competitions', 'AI', 'Workshops'],
     imageLabel: 'NOVA 2026 photography will be added later',
@@ -97,7 +97,7 @@ export const events: EventItem[] = [
 ]
 
 export const benefits = [
-  ['LEARN', 'Workshops, technical sessions and hands-on learning.', 'BookOpen'],
+  ['LEARN', 'Workshops, technical sessions and hands-on learning that turn curiosity into momentum.', 'BookOpen'],
   ['BUILD', 'Turn ideas into projects and practical solutions.', 'Blocks'],
   ['COMPETE', 'Hackathons, coding challenges and technical competitions.', 'Trophy'],
   ['EXPLORE', 'Discover AI, ML, cloud computing and emerging technologies.', 'Sparkles'],
@@ -105,10 +105,18 @@ export const benefits = [
   ['LEAD', 'Organize, contribute, take initiative and grow.', 'Flag'],
 ] as const
 
+export const journeyItems = [
+  ['01', 'Show up curious', 'Bring the questions you have and the ones you have not thought of yet.'],
+  ['02', 'Find your people', 'Meet students who want to explore, build and think together.'],
+  ['03', 'Get hands-on', 'Move from conversations to workshops, challenges and projects.'],
+  ['04', 'Make it real', 'Test ideas through competitions, collaboration and practical work.'],
+  ['05', 'Leave a mark', 'Contribute, take initiative and help shape what comes next.'],
+] as const
+
 export const galleryItems = events.filter((event) => event.galleryCount > 0).flatMap((event) => Array.from({ length: event.galleryCount }, (_, index) => ({ eventId: event.id, label: `${event.imageLabel} ${index + 1}` })))
 
 export const getEvent = (id: string) => events.find((event) => event.id === id)
-export const recruitmentIsReady = siteConfig.recruitmentFormUrl.startsWith('http')
+export const recruitmentIsReady = Boolean(siteConfig.recruitmentFormUrl?.startsWith('http'))
 
 export const placeholderContacts = [
   { number: '+91 00000 00000', note: 'Temporary placeholder — replace in source data' },

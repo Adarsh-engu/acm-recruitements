@@ -36,6 +36,11 @@
   .label { @apply font-mono text-[10px] uppercase tracking-[.2em] text-slate-500; }
   .hero-grid { background-color: #080f1c; background-image: linear-gradient(rgba(39,151,255,.08) 1px, transparent 1px), linear-gradient(90deg, rgba(39,151,255,.08) 1px, transparent 1px), radial-gradient(circle at 75% 30%, rgba(39,151,255,.14), transparent 32%); background-size: 56px 56px, 56px 56px, auto; }
   .media-placeholder { background-image: linear-gradient(135deg, rgba(255,255,255,.03), transparent 45%), repeating-linear-gradient(135deg, transparent 0 14px, rgba(255,255,255,.025) 15px 16px); }
+  .journey-step:not(:last-child)::after { content: ""; position: absolute; top: 24px; right: -14px; width: 24px; height: 1px; background: linear-gradient(90deg, rgba(39,151,255,.55), rgba(255,255,255,.08)); }
+  .journey-step:not(:last-child)::before { content: ""; position: absolute; top: 21px; right: 8px; width: 6px; height: 6px; border-top: 1px solid rgba(39,151,255,.65); border-right: 1px solid rgba(39,151,255,.65); transform: rotate(45deg); }
+}
+@media (max-width: 767px) {
+  .journey-step:not(:last-child)::after, .journey-step:not(:last-child)::before { display: none; }
 }
 
 @media (prefers-reduced-motion: no-preference) {
