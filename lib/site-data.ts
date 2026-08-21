@@ -115,6 +115,8 @@ export const journeyItems = [
 
 export const galleryItems = events.filter((event) => event.galleryCount > 0).flatMap((event) => Array.from({ length: event.galleryCount }, (_, index) => ({ eventId: event.id, label: `${event.imageLabel} ${index + 1}` })))
 
+export const galleryFilters = ['ALL', '2025', '2026'] as const
+
 export const getEvent = (id: string) => events.find((event) => event.id === id)
 export const recruitmentIsReady = Boolean(siteConfig.recruitmentFormUrl?.startsWith('http'))
 
