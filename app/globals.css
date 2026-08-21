@@ -40,17 +40,16 @@
   .journey-step:not(:last-child)::before { content: ""; position: absolute; top: 21px; right: 8px; width: 6px; height: 6px; border-top: 1px solid rgba(39,151,255,.65); border-right: 1px solid rgba(39,151,255,.65); transform: rotate(45deg); }
   .media-image-frame { position: relative; aspect-ratio: 1.35 / 1; }
   .media-image-frame img { display: block; }
-  .gallery-event-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: .75rem; }
-  .gallery-event-grid > button:first-child { grid-row: span 2; }
-  .gallery-event-grid > button:first-child .media-placeholder { aspect-ratio: 1 / 1.08; }
-  .gallery-event-grid > button:not(:first-child) .media-placeholder { aspect-ratio: 1.35 / 1; }
+  .gallery-event-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: .75rem; }
+  .gallery-event-grid > button .media-placeholder, .gallery-event-grid > button .media-image-frame { aspect-ratio: 1.35 / 1; }
   .gallery-empty { display: block; }
   .event-archive-row { scroll-margin-top: 7rem; }
 }
+@media (max-width: 900px) {
+  .gallery-event-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
 @media (max-width: 639px) {
   .gallery-event-grid { grid-template-columns: 1fr; }
-  .gallery-event-grid > button:first-child { grid-row: auto; }
-  .gallery-event-grid > button:first-child .media-placeholder, .gallery-event-grid > button:not(:first-child) .media-placeholder { aspect-ratio: 1.35 / 1; }
 }
 @media (max-width: 767px) {
   .journey-step:not(:last-child)::after, .journey-step:not(:last-child)::before { display: none; }

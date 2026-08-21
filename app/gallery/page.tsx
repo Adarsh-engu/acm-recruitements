@@ -9,7 +9,7 @@ export default function Gallery() {
   const [selected, setSelected] = useState<{ eventId: string; index: number } | null>(null)
   const selectedEvent = selected ? events.find((event) => event.id === selected.eventId) : null
   const selectedPhotos = selectedEvent ? selectedEvent.images?.length ? selectedEvent.images.map((src, index) => ({ eventId: selectedEvent.id, label: `${selectedEvent.imageLabel} ${index + 1}`, src })) : Array.from({ length: selectedEvent.galleryCount }, (_, index) => ({ eventId: selectedEvent.id, label: `${selectedEvent.imageLabel} ${index + 1}`, src: undefined })) : []
-  const selectedItem = selected && selectedEvent && selectedPhotos[selected.index] ? { label: selectedPhotos[selected.index].label, src: selectedPhotos[selected.index].src, eventTitle: selectedEvent.title, date: selectedEvent.date } : null
+  const selectedItem = selected && selectedEvent && selectedPhotos[selected.index] ? { label: selectedPhotos[selected.index].label, src: selectedPhotos[selected.index].src, eventTitle: selectedEvent.title, date: selectedEvent.date, index: selected.index, total: selectedPhotos.length } : null
   const moveSelection = (direction: number) => {
     if (!selected || selectedPhotos.length === 0) return
     setSelected({ ...selected, index: (selected.index + direction + selectedPhotos.length) % selectedPhotos.length })
