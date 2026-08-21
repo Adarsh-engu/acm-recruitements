@@ -28,7 +28,7 @@ export type EventItem = {
 }
 
 export const events: EventItem[] = [
-  {
+    {
     id: 'inauguration-2025',
     title: 'ACM GRIET Student Chapter Inauguration',
     date: '4 April 2025',
@@ -38,7 +38,14 @@ export const events: EventItem[] = [
     highlights: ['Chapter ID: 19885', 'Chief Guest: Dr. Muniraju Naidu Vadlamudi', 'Guest of Honour: Mrs. Gayathri Vaka', 'Coordinator: Dr. B. Sankara Babu'],
     tags: ['Community', 'Chapter'],
     imageLabel: 'Inauguration photographs',
-    galleryCount: 5,
+images: [
+  '/images/inauguration-1 (1).jpg',
+  '/images/inauguration-2 (1).jpg',
+  '/images/inauguration-3 (1).jpg',
+  '/images/inauguration-4 (1).jpg',
+],
+galleryCount: 4,
+coverImage: '/images/inauguration-1.jpg',
   },
   {
     id: 'cloudron-2025',
@@ -49,11 +56,19 @@ export const events: EventItem[] = [
     focus: 'Cloud Computing',
     description: 'Cloudron @ GRIET combined a guest session on cloud computing with interactive coding games and challenges. The event encouraged problem-solving, collaboration and active participation.',
     highlights: ['Guest session: Krishna Reddy', 'Interactive coding games and challenges', 'Recognition and prizes for top-performing participants'],
-    tags: ['Workshops', 'Cloud'],
-    imageLabel: 'Cloudron photographs',
-    galleryCount: 6,
-    featured: true,
-  },
+      tags: ['Workshops', 'Cloud'],
+  imageLabel: 'Cloudron photographs',
+  images: [
+    '/images/cloudron-1.jpg',
+    '/images/cloudron-2.jpg',
+    '/images/cloudron-3.jpg',
+    '/images/cloudron-4.jpg',
+    '/images/cloudron-5.jpg',
+  ],
+  galleryCount: 5,
+  coverImage: '/images/cloudron-1.jpg',
+  featured: true,
+},
   {
     id: 'mahotsav-2025',
     title: 'ACM Mahotsav 2025',
@@ -63,10 +78,15 @@ export const events: EventItem[] = [
     theme: 'Expanding Horizons in Computing',
     description: 'ACM Mahotsav 2025 brought ACM GRIET Student Chapter members into a wider technical community through workshops, competitions and interactive sessions focused on innovation, computing and collaboration.',
     highlights: ['Workshops', 'Competitions', 'Interactive sessions'],
-    tags: ['Competitions', 'Community'],
-    imageLabel: 'Mahotsav photographs',
-    galleryCount: 3,
-  },
+     tags: ['Competitions', 'Community'],
+  imageLabel: 'Mahotsav photographs',
+  images: [
+    '/images/mahotsav-1.jpg',
+    '/images/mahotsav-2.jpg',
+  ],
+  galleryCount: 2,
+  coverImage: '/images/mahotsav-1.jpg',
+},
   {
     id: 'sih-2025',
     title: 'GRIET Internal Hackathon — Smart India Hackathon 2025',
@@ -75,11 +95,15 @@ export const events: EventItem[] = [
     venue: 'Gokaraju Rangaraju Institute of Engineering & Technology',
     description: 'An internal hackathon focused on innovation, creativity, collaboration and real-world problem solving, serving as an internal selection stage for Smart India Hackathon 2025.',
     highlights: ['Organized by ACM GRIET Student Chapter with the Department of Computer Science and Engineering', 'Smart Automation', 'Healthcare', 'Agriculture', 'Sustainability', 'Cybersecurity'],
-    tags: ['Hackathons', 'Innovation'],
-    imageLabel: 'Internal hackathon photographs',
-    galleryCount: 2,
-    featured: true,
-  },
+      tags: ['Hackathons', 'Innovation'],
+  imageLabel: 'Internal Hackathon photographs',
+  images: [
+    '/images/smart-india-hackathon-1.jpg',
+  ],
+  galleryCount: 1,
+  coverImage: '/images/smart-india-hackathon-1.jpg',
+  featured: true,
+},
   {
     id: 'nova-2026',
     title: 'NOVA 2026',
@@ -91,11 +115,15 @@ export const events: EventItem[] = [
     description: 'NOVA brings together ORBITEX, a technical competition built around logic and problem-solving, and ECLIPSE, an MCP & Agentic AI workshop with hands-on learning and live demonstrations.',
     highlights: ['ORBITEX: logic, creativity, problem-solving, debugging and technical challenges', 'ECLIPSE: MCP & Agentic AI Workshop', 'Team size for ORBITEX: 2–4 members', 'Prize pool: ₹10,000', 'ECLIPSE topics include MCP fundamentals, tools, real-world data and intelligent agent workflows'],
     tags: ['Competitions', 'AI', 'Workshops'],
-    imageLabel: 'NOVA 2026 photography will be added later',
-    galleryCount: 0,
-    featured: true,
-    placeholder: true,
-  },
+imageLabel: 'NOVA 2026 photographs',
+images: [
+  '/images/nova-2026-1.jpg',
+],
+galleryCount: 1,
+coverImage: '/images/nova-2026-1.jpg',
+featured: true,
+placeholder: false,
+},
 ]
 
 export const benefits = [
