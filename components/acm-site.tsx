@@ -134,11 +134,10 @@ export function EventGalleryArchive({
                 >
                   <div className="relative overflow-hidden rounded-3xl border border-white/10 bg-[#101a2b]">
                     <img
-                      src={photos[0].src}
-                      alt={`${event.title} — main photograph`}
-                      loading="lazy"
-                      className="h-[360px] w-full object-cover transition duration-500 group-hover:scale-[1.015] sm:h-[500px]"
-                    />
+  src={photos[0].src}
+  alt={`${event.title} — main photograph`}
+  className="h-[360px] w-full object-cover transition duration-500 group-hover:scale-[1.015] sm:h-[500px]"
+/>
 
                     {/* subtle hover overlay */}
                     <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-70" />
