@@ -20,6 +20,8 @@ export type EventItem = {
   highlights: string[]
   tags: string[]
   imageLabel: string
+  coverImage?: string
+  images?: string[]
   galleryCount: number
   featured?: boolean
   placeholder?: boolean
