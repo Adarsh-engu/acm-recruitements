@@ -33,9 +33,15 @@ export function Nav() {
 }
 
 export function JoinButton({ className = '' }: { className?: string }) {
-  const [message, setMessage] = useState(false)
-  const activate = () => { if (!recruitmentIsReady) { setMessage(true); window.setTimeout(() => setMessage(false), 3600) } }
-  return <div className={`relative ${className}`}><a href={recruitmentIsReady ? siteConfig.recruitmentFormUrl ?? '#' : '#recruitment-placeholder'} onClick={activate} className="inline-flex items-center justify-center gap-2 rounded-full bg-acm px-5 py-2.5 text-xs font-bold tracking-wide text-white shadow-lg shadow-acm/20 transition hover:bg-acm-bright focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-cyan"><span>JOIN ACM</span><ArrowUpRight size={15} /></a>{message && <div role="status" className="absolute right-0 top-[calc(100%+10px)] z-50 w-64 rounded-xl border border-acm/30 bg-surface p-3 text-xs leading-5 text-slate-200 shadow-xl">RECRUITMENT FORM COMING SOON. The form link will be added here.</div>}</div>
+  return (
+    <a
+      href="/recruitment"
+      className={`inline-flex items-center justify-center gap-2 rounded-full bg-acm px-5 py-2.5 text-xs font-bold tracking-wide text-white shadow-lg shadow-acm/20 transition hover:bg-acm-bright focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-cyan ${className}`}
+    >
+      <span>JOIN ACM</span>
+      <ArrowUpRight size={15} />
+    </a>
+  )
 }
 
 export function PageShell({ children }: { children: React.ReactNode }) { return <><Nav /><main className="min-h-screen overflow-hidden">{children}</main><Footer /></> }
