@@ -6,14 +6,14 @@ import { createClient } from '@/lib/supabase/client'
 import { PageShell } from '@/components/acm-site'
 
 const branches = [
-  'Civil',
+  'CE',
   'CSB',
   'CSD',
   'CSE',
   'CSM',
   'ECE',
   'EEE',
-  'Mechanical',
+  'ME',
 ]
 
 const years = ['2nd Year', '3rd Year']
@@ -33,22 +33,26 @@ const teams = [
 
 type FormData = {
   full_name: string
+  college_email: string
   roll_number: string
+  phone: string
   year: string
   branch: string
   section: string
-  phone: string
-  interested_roles: string[]
+  first_priority: string
+  second_priority: string
 }
 
 const initialForm: FormData = {
   full_name: '',
+  college_email: '',
   roll_number: '',
+  phone: '',
   year: '',
   branch: '',
   section: '',
-  phone: '',
-  interested_roles: [],
+  first_priority: '',
+  second_priority: '',
 }
 
 export default function RecruitmentPage() {
@@ -58,36 +62,13 @@ export default function RecruitmentPage() {
   const [submitting, setSubmitting] = useState(false)
 
   const updateField = (field: keyof FormData, value: string) => {
-    setForm((current) => ({
-      ...current,
-      [field]: value,
-    }))
-    setError('')
-  }
-
-  const toggleTeam = (team: string) => {
     setForm((current) => {
-      const alreadySelected = current.interested_roles.includes(team)
-
-      if (alreadySelected) {
-        return {
-          ...current,
-          interested_roles: current.interested_roles.filter(
-            (item) => item !== team,
-          ),
-        }
+      const next = { ...current, [field]: value }
+      if (field === 'first_priority' && current.second_priority === value) {
+        next.second_priority = ''
       }
-
-      if (current.interested_roles.length >= 2) {
-        return current
-      }
-
-      return {
-        ...current,
-        interested_roles: [...current.interested_roles, team],
-      }
+      return next
     })
-
     setError('')
   }
 
@@ -95,25 +76,39 @@ export default function RecruitmentPage() {
     event.preventDefault()
     setError('')
 
+    const fullName = form.full_name.trim()
+    const collegeEmail = form.college_email.trim()
+    const rollNumber = form.roll_number.trim().toUpperCase()
+    const phone = form.phone.trim()
+
     if (
-      !form.full_name.trim() ||
-      !form.roll_number.trim() ||
+      !fullName ||
+      !collegeEmail ||
+      !rollNumber ||
+      !phone ||
       !form.year ||
       !form.branch ||
       !form.section ||
-      !form.phone.trim()
+      !form.first_priority
     ) {
       setError('Please fill in all required fields.')
       return
     }
 
-    if (!/^[6-9]\d{9}$/.test(form.phone.trim())) {
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
+    const normalizedEmail = collegeEmail.toLowerCase()
+    if (!emailRegex.test(normalizedEmail) || !normalizedEmail.endsWith('@grietcollege.com')) {
+      setError('Please enter a valid GRIET college email ending with @grietcollege.com.')
+      return
+    }
+
+    if (!/^[6-9]\d{9}$/.test(phone)) {
       setError('Please enter a valid 10-digit Indian mobile number.')
       return
     }
 
-    if (form.interested_roles.length === 0) {
-      setError('Please select at least one team.')
+    if (form.second_priority && form.first_priority === form.second_priority) {
+      setError('First and second priority teams cannot be the same.')
       return
     }
 
@@ -121,17 +116,44 @@ export default function RecruitmentPage() {
 
     setSubmitting(true)
 
-    const { error: insertError } = await supabase
+    const roles = [form.first_priority, form.second_priority].filter(Boolean)
+
+    const updatedPayload = {
+      full_name: fullName,
+      college_email: normalizedEmail,
+      roll_number: rollNumber,
+      phone_number: phone,
+      phone: phone,
+      year: form.year,
+      branch: form.branch,
+      section: form.section,
+      first_priority: form.first_priority,
+      second_priority: form.second_priority || null,
+      interested_roles: roles,
+      interested_teams: roles,
+    }
+
+    let { error: insertError } = await supabase
       .from('recruitments')
-      .insert({
-        full_name: form.full_name.trim(),
-        roll_number: form.roll_number.trim().toUpperCase(),
+      .insert(updatedPayload)
+
+    if (insertError && insertError.code === 'PGRST204') {
+      const fallbackPayload = {
+        full_name: fullName,
+        roll_number: rollNumber,
         year: form.year,
         branch: form.branch,
         section: form.section,
-        phone: form.phone.trim(),
-        interested_roles: form.interested_roles,
-      })
+        phone: phone,
+        interested_roles: roles,
+      }
+
+      const fallbackRes = await supabase
+        .from('recruitments')
+        .insert(fallbackPayload)
+
+      insertError = fallbackRes.error
+    }
 
     setSubmitting(false)
 
@@ -217,6 +239,26 @@ export default function RecruitmentPage() {
                 />
               </div>
 
+              <div className="sm:col-span-2">
+                <label
+                  htmlFor="college_email"
+                  className="mb-2 block text-xs font-semibold uppercase tracking-[.12em] text-slate-300"
+                >
+                  College Email ID *
+                </label>
+
+                <input
+                  id="college_email"
+                  type="email"
+                  value={form.college_email}
+                  onChange={(event) =>
+                    updateField('college_email', event.target.value)
+                  }
+                  placeholder="24241a05a0@grietcollege.com"
+                  className="w-full rounded-xl border border-white/10 bg-background px-4 py-3 text-sm text-white outline-none placeholder:text-slate-600 focus:border-acm/60 focus:ring-1 focus:ring-acm/40"
+                />
+              </div>
+
               <div>
                 <label
                   htmlFor="roll_number"
@@ -230,9 +272,9 @@ export default function RecruitmentPage() {
                   type="text"
                   value={form.roll_number}
                   onChange={(event) =>
-                    updateField('roll_number', event.target.value)
+                    updateField('roll_number', event.target.value.toUpperCase())
                   }
-                  placeholder="e.g. 24XX1A05XX"
+                  placeholder="E.G. 24241A05A0"
                   className="w-full rounded-xl border border-white/10 bg-background px-4 py-3 text-sm uppercase text-white outline-none placeholder:text-slate-600 focus:border-acm/60 focus:ring-1 focus:ring-acm/40"
                 />
               </div>
@@ -336,55 +378,59 @@ export default function RecruitmentPage() {
                   ))}
                 </select>
               </div>
-            </div>
 
-            <div className="mt-10 border-t border-white/10 pt-8">
-              <div className="flex items-end justify-between gap-4">
-                <div>
-                  <label className="block text-xs font-semibold uppercase tracking-[.12em] text-slate-300">
-                    Interested Teams *
-                  </label>
+              <div>
+                <label
+                  htmlFor="first_priority"
+                  className="mb-2 block text-xs font-semibold uppercase tracking-[.12em] text-slate-300"
+                >
+                  First Priority *
+                </label>
 
-                  <p className="mt-2 text-xs text-slate-500">
-                    Select up to 2 teams.
-                  </p>
-                </div>
-
-                <span className="font-mono text-xs text-acm">
-                  {form.interested_roles.length}/2
-                </span>
+                <select
+                  id="first_priority"
+                  value={form.first_priority}
+                  onChange={(event) =>
+                    updateField('first_priority', event.target.value)
+                  }
+                  className="w-full rounded-xl border border-white/10 bg-background px-4 py-3 text-sm text-white outline-none focus:border-acm/60 focus:ring-1 focus:ring-acm/40"
+                >
+                  <option value="">Select your first priority</option>
+                  {teams.map((team) => (
+                    <option key={team} value={team}>
+                      {team}
+                    </option>
+                  ))}
+                </select>
               </div>
 
-              <div className="mt-5 grid gap-3 sm:grid-cols-2">
-                {teams.map((team) => {
-                  const selected = form.interested_roles.includes(team)
-                  const disabled =
-                    !selected && form.interested_roles.length >= 2
+              <div>
+                <label
+                  htmlFor="second_priority"
+                  className="mb-2 block text-xs font-semibold uppercase tracking-[.12em] text-slate-300"
+                >
+                  Second Priority
+                </label>
 
-                  return (
-                    <button
+                <select
+                  id="second_priority"
+                  value={form.second_priority}
+                  onChange={(event) =>
+                    updateField('second_priority', event.target.value)
+                  }
+                  className="w-full rounded-xl border border-white/10 bg-background px-4 py-3 text-sm text-white outline-none focus:border-acm/60 focus:ring-1 focus:ring-acm/40"
+                >
+                  <option value="">Select your second priority (Optional)</option>
+                  {teams.map((team) => (
+                    <option
                       key={team}
-                      type="button"
-                      disabled={disabled}
-                      onClick={() => toggleTeam(team)}
-                      className={`flex items-center justify-between rounded-xl border p-4 text-left text-sm transition ${
-                        selected
-                          ? 'border-acm/60 bg-acm/10 text-white'
-                          : disabled
-                            ? 'cursor-not-allowed border-white/5 bg-white/[.02] text-slate-600'
-                            : 'border-white/10 bg-background text-slate-400 hover:border-acm/40 hover:text-white'
-                      }`}
+                      value={team}
+                      disabled={team === form.first_priority}
                     >
-                      <span>{team}</span>
-
-                      {selected && (
-                        <span className="grid size-6 place-items-center rounded-full bg-acm text-white">
-                          <Check size={14} />
-                        </span>
-                      )}
-                    </button>
-                  )
-                })}
+                      {team} {team === form.first_priority ? '(Selected as First Priority)' : ''}
+                    </option>
+                  ))}
+                </select>
               </div>
             </div>
 
