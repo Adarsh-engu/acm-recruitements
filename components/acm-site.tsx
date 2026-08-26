@@ -418,7 +418,7 @@ export function ContactSection() {
                   <div className="grid size-10 place-items-center rounded-full bg-white/5 text-acm"><Phone size={16} /></div>
                   <div>
                     <p className="font-mono text-xs font-medium text-white">{contact.number}</p>
-                    <p className="mt-0.5 text-[10px] text-slate-500">Placeholder</p>
+                    <p className="mt-0.5 text-[10px] text-slate-500">{contact.note}</p>
                   </div>
                 </div>
               ))}

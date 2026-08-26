@@ -11,6 +11,9 @@ export const metadata: Metadata = {
   title: 'ACM GRIET Student Chapter',
   description: 'Where technology meets curiosity, ideas turn into action, and students come together to build what’s next.',
   generator: 'v0.app',
+  icons: {
+    icon: '/images/acm-logo-circle.png',
+  },
 }
 
 export const viewport: Viewport = { colorScheme: 'dark', themeColor: '#080f1c', width: 'device-width', initialScale: 1, userScalable: true }
