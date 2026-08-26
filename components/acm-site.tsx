@@ -3,10 +3,29 @@
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 import { useEffect, useRef, useState } from 'react'
-import { ArrowUpRight, BookOpen, Blocks, CalendarDays, ChevronRight, Circle, Flag, Camera, BriefcaseBusiness, Menu, Sparkles, Trophy, Users, X } from 'lucide-react'
-import { benefits, events, journeyItems, navItems, recruitmentIsReady, siteConfig, type EventItem } from '@/lib/site-data'
+import { motion } from 'framer-motion'
+
+import { ArrowUpRight, BookOpen, Blocks, CalendarDays, ChevronRight, Circle, ExternalLink, Flag, Mail, Phone, Menu, Sparkles, Trophy, Users, X } from 'lucide-react'
+import { benefits, events, journeyItems, navItems, placeholderContacts, recruitmentIsReady, siteConfig, type EventItem } from '@/lib/site-data'
+import { FaInstagram, FaLinkedin } from 'react-icons/fa'
 
 const iconMap = { BookOpen, Blocks, Trophy, Sparkles, Users, Flag }
+
+const fadeUpVariants = {
+  hidden: { opacity: 0, y: 24 },
+  visible: { opacity: 1, y: 0, transition: { duration: 0.6, ease: [0.16, 1, 0.3, 1] } }
+}
+
+const staggerContainer = {
+  hidden: { opacity: 0 },
+  visible: {
+    opacity: 1,
+    transition: {
+      staggerChildren: 0.1,
+      delayChildren: 0.1
+    }
+  }
+}
 
 export function Mark({ compact = false }: { compact?: boolean }) {
   return (
@@ -34,37 +53,39 @@ export function Nav() {
 
 export function JoinButton({ className = '' }: { className?: string }) {
   return (
-    <a
+    <motion.a
+      whileHover={{ scale: 1.05 }}
+      whileTap={{ scale: 0.95 }}
       href="/recruitment"
       className={`inline-flex items-center justify-center gap-2 rounded-full bg-acm px-5 py-2.5 text-xs font-bold tracking-wide text-white shadow-lg shadow-acm/20 transition hover:bg-acm-bright focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-cyan ${className}`}
     >
       <span>JOIN ACM</span>
       <ArrowUpRight size={15} />
-    </a>
+    </motion.a>
   )
 }
 
 export function PageShell({ children }: { children: React.ReactNode }) { return <><Nav /><main className="min-h-screen overflow-hidden">{children}</main><Footer /></> }
-export function SectionIntro({ eyebrow, title, description, align = 'left' }: { eyebrow: string; title: string; description?: string; align?: 'left' | 'center' }) { return <div className={`max-w-2xl ${align === 'center' ? 'mx-auto text-center' : ''}`}><p className="mb-4 font-mono text-[11px] font-bold uppercase tracking-[.24em] text-acm">{eyebrow}</p><h2 className="font-display text-3xl font-bold tracking-tight text-white sm:text-5xl text-balance">{title}</h2>{description && <p className="mt-5 text-base leading-7 text-slate-400 text-pretty">{description}</p>}</div> }
+export function SectionIntro({ eyebrow, title, description, align = 'left' }: { eyebrow: string; title: string; description?: string; align?: 'left' | 'center' }) { return <motion.div variants={fadeUpVariants} initial="hidden" whileInView="visible" viewport={{ once: true, margin: "-100px" }} className={`max-w-2xl ${align === 'center' ? 'mx-auto text-center' : ''}`}><p className="mb-4 font-mono text-[11px] font-bold uppercase tracking-[.24em] text-acm">{eyebrow}</p><h2 className="font-display text-3xl font-bold tracking-tight text-white sm:text-5xl text-balance">{title}</h2>{description && <p className="mt-5 text-base leading-7 text-slate-400 text-pretty">{description}</p>}</motion.div> }
 
 export function MediaPlaceholder({ label, large = false, src, natural = false }: { label: string; large?: boolean; src?: string; natural?: boolean }) { if (src) return <div className={`media-image-frame overflow-hidden rounded-2xl border border-white/10 bg-[#101a2b] ${large ? 'min-h-80' : 'aspect-[1.35/1]'}`}><img src={src} alt={label} loading="lazy" className={`h-full w-full ${natural ? 'object-contain' : 'object-cover'}`} /></div>; return <div className={`media-placeholder relative flex items-center justify-center overflow-hidden rounded-2xl border border-white/10 bg-[#101a2b] ${large ? 'min-h-80' : 'aspect-[1.35/1]'}`}><div className="absolute inset-0 bg-[linear-gradient(120deg,transparent_0%,rgba(39,151,255,.08)_45%,transparent_70%)]" /><div className="relative flex flex-col items-center gap-3 px-6 text-center"><div className="grid size-12 place-items-center rounded-full border border-acm/30 bg-acm/10 text-acm"><Circle size={10} fill="currentColor" /></div><span className="font-mono text-[10px] uppercase tracking-[.18em] text-slate-500">{label}</span><span className="text-xs text-slate-600">{label.includes('NOVA') ? 'Event photographs will be added later' : 'Authentic event media will appear here'}</span></div></div> }
 
-export function EventCard({ event }: { event: EventItem }) { return <article className="group flex h-full flex-col overflow-hidden rounded-3xl bg-surface transition duration-300 hover:bg-surface/80"><MediaPlaceholder
+export function EventCard({ event }: { event: EventItem }) { return <motion.article variants={fadeUpVariants} className="group flex h-full flex-col overflow-hidden rounded-3xl bg-surface transition duration-300 hover:bg-surface/80"><MediaPlaceholder
   label={event.imageLabel}
   src={event.coverImage}
-/><div className="flex flex-1 flex-col p-6 sm:p-8"><div className="mb-4 flex items-center gap-2 font-mono text-[10px] font-semibold uppercase tracking-[.16em] text-acm"><CalendarDays size={13} /> {event.date}</div><h3 className="font-display text-xl font-semibold leading-tight text-white">{event.title}</h3><p className="mt-3 flex-1 text-sm leading-6 text-slate-400">{event.description}</p><div className="mt-5 flex flex-wrap gap-2">{event.tags.map(tag => <span key={tag} className="rounded-full bg-white/5 px-3 py-1 font-mono text-[10px] uppercase tracking-wider text-slate-400">{tag}</span>)}</div></div></article> }
+/><div className="flex flex-1 flex-col p-6 sm:p-8"><div className="mb-4 flex items-center gap-2 font-mono text-[10px] font-semibold uppercase tracking-[.16em] text-acm"><CalendarDays size={13} /> {event.date}</div><h3 className="font-display text-xl font-semibold leading-tight text-white">{event.title}</h3><p className="mt-3 flex-1 text-sm leading-6 text-slate-400">{event.description}</p><div className="mt-5 flex flex-wrap gap-2">{event.tags.map(tag => <span key={tag} className="rounded-full bg-white/5 px-3 py-1 font-mono text-[10px] uppercase tracking-wider text-slate-400">{tag}</span>)}</div></div></motion.article> }
 
-export function EventGrid({ items = events }: { items?: EventItem[] }) { return <div className="grid gap-5 md:grid-cols-2 lg:grid-cols-3">{items.map(event => <EventCard key={event.id} event={event} />)}</div> }
+export function EventGrid({ items = events }: { items?: EventItem[] }) { return <motion.div variants={staggerContainer} initial="hidden" whileInView="visible" viewport={{ once: true, margin: "-100px" }} className="grid gap-5 md:grid-cols-2 lg:grid-cols-3">{items.map(event => <EventCard key={event.id} event={event} />)}</motion.div> }
 
-export function WhyACM() { return <section className="mx-auto max-w-7xl px-5 py-24 sm:px-8"><SectionIntro eyebrow="Why ACM?" title="More than a club. A space to learn, build, collaborate and grow." /><div className="mt-12 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">{benefits.map(([title, description, icon]) => { const Icon = iconMap[icon as keyof typeof iconMap]; return <div key={title} className="group rounded-3xl bg-surface p-8 transition hover:bg-surface/80"><Icon size={24} strokeWidth={1.5} className="text-acm transition group-hover:scale-110" /><h3 className="mt-10 font-display text-lg font-semibold text-white">{title}</h3><p className="mt-2 text-sm leading-6 text-slate-400">{description}</p></div> })}</div></section> }
+export function WhyACM() { return <section className="mx-auto max-w-7xl px-5 py-12 sm:px-8 sm:py-16"><SectionIntro eyebrow="Why ACM?" title="More than a club. A space to learn, build, collaborate and grow." /><motion.div variants={staggerContainer} initial="hidden" whileInView="visible" viewport={{ once: true, margin: "-100px" }} className="mt-12 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">{benefits.map(([title, description, icon]) => { const Icon = iconMap[icon as keyof typeof iconMap]; return <motion.div variants={fadeUpVariants} key={title} className="group rounded-3xl bg-surface p-8 transition hover:bg-surface/80"><Icon size={24} strokeWidth={1.5} className="text-acm transition group-hover:scale-110" /><h3 className="mt-10 font-display text-lg font-semibold text-white">{title}</h3><p className="mt-2 text-sm leading-6 text-slate-400">{description}</p></motion.div> })}</motion.div></section> }
 
-export function Journey() { return <section className="mx-auto max-w-7xl px-5 py-24 sm:px-8"><SectionIntro eyebrow="What you&apos;ll actually experience" title="A community is built one step at a time." description="There is no single way to be part of ACM GRIET. Start with curiosity, find your people, and keep moving toward the work that excites you." /><div className="mt-12 grid gap-4 md:grid-cols-5">{journeyItems.map(([step, title, description]) => <article key={step} className="group rounded-3xl bg-surface p-6 sm:p-8 transition hover:bg-surface/80"><span className="font-mono text-xs font-bold text-acm">{step}</span><h3 className="mt-8 font-display text-lg font-semibold text-white">{title}</h3><p className="mt-2 text-sm leading-6 text-slate-400">{description}</p></article>)}</div></section> }
+export function Journey() { return <section className="mx-auto max-w-7xl px-5 py-12 sm:px-8 sm:py-16"><SectionIntro eyebrow="What you&apos;ll actually experience" title="A community is built one step at a time." description="There is no single way to be part of ACM GRIET. Start with curiosity, find your people, and keep moving toward the work that excites you." /><motion.div variants={staggerContainer} initial="hidden" whileInView="visible" viewport={{ once: true, margin: "-100px" }} className="mt-12 grid gap-4 md:grid-cols-5">{journeyItems.map(([step, title, description]) => <motion.article variants={fadeUpVariants} key={step} className="group rounded-3xl bg-surface p-6 sm:p-8 transition hover:bg-surface/80"><span className="font-mono text-xs font-bold text-acm">{step}</span><h3 className="mt-8 font-display text-lg font-semibold text-white">{title}</h3><p className="mt-2 text-sm leading-6 text-slate-400">{description}</p></motion.article>)}</motion.div></section> }
 
-export function Faculty() { return <section className="mx-auto max-w-7xl px-5 py-24 sm:px-8"><div className="flex flex-col justify-between gap-8 rounded-3xl bg-surface p-8 sm:flex-row sm:items-end sm:p-12"><div><p className="font-mono text-[10px] font-semibold uppercase tracking-[.2em] text-acm">Guided by experience. Driven by students.</p><h2 className="mt-4 font-display text-2xl font-semibold text-white">Dr. B. Sankara Babu</h2><p className="mt-2 text-sm leading-6 text-slate-400">Head, Department of Computer Science & Engineering<br />Faculty Coordinator, ACM GRIET Student Chapter</p></div><div className="font-mono text-xs text-slate-500">ACM GRIET / 2026</div></div></section> }
+export function Faculty() { return <section className="mx-auto max-w-7xl px-5 py-12 sm:px-8 sm:py-16"><motion.div variants={fadeUpVariants} initial="hidden" whileInView="visible" viewport={{ once: true, margin: "-100px" }} className="flex flex-col justify-between gap-8 rounded-3xl bg-surface p-8 sm:flex-row sm:items-center sm:p-12"><div className="flex flex-col sm:flex-row items-center sm:items-start gap-6"><img src="/images/faculty.jpg" alt="Dr. B. Sankara Babu" className="w-24 h-24 sm:w-32 sm:h-32 rounded-full object-cover border-2 border-acm/20 shrink-0" /><div><p className="font-mono text-[10px] font-semibold uppercase tracking-[.2em] text-acm">Guided by experience. Driven by students.</p><h2 className="mt-4 font-display text-2xl font-semibold text-white">Dr. B. Sankara Babu</h2><p className="mt-2 text-sm leading-6 text-slate-400">Head, Department of Computer Science & Engineering<br />Faculty Coordinator, ACM GRIET Student Chapter</p></div></div><div className="font-mono text-xs text-slate-500 mt-4 sm:mt-0 sm:self-end">ACM GRIET / 2026</div></motion.div></section> }
 
-export function CTA() { return <section className="mx-auto max-w-7xl px-5 py-24 sm:px-8"><div className="rounded-3xl bg-surface p-8 text-center sm:p-16"><p className="mx-auto font-mono text-[10px] font-semibold uppercase tracking-[.2em] text-cyan">Open to 2nd and 3rd year students</p><h2 className="mx-auto mt-4 font-display text-3xl font-bold text-white sm:text-5xl text-balance">Ready to explore what&apos;s next?</h2><p className="mx-auto mt-5 max-w-xl text-sm leading-6 text-slate-400">Join ACM GRIET and be part of a community that learns, builds and creates together.</p><div className="mt-8 flex justify-center"><JoinButton /></div></div></section> }
+export function CTA() { return <section className="mx-auto max-w-7xl px-5 py-12 sm:px-8 sm:py-16"><motion.div variants={fadeUpVariants} initial="hidden" whileInView="visible" viewport={{ once: true, margin: "-100px" }} className="rounded-3xl bg-surface p-8 text-center sm:p-16"><p className="mx-auto font-mono text-[10px] font-semibold uppercase tracking-[.2em] text-cyan">Open to 2nd and 3rd year students</p><h2 className="mx-auto mt-4 font-display text-3xl font-bold text-white sm:text-5xl text-balance">Ready to explore what&apos;s next?</h2><p className="mx-auto mt-5 max-w-xl text-sm leading-6 text-slate-400">Join ACM GRIET and be part of a community that learns, builds and creates together.</p><div className="mt-8 flex justify-center"><JoinButton /></div></motion.div></section> }
 
-export function Footer() { return <footer className="border-t border-white/10 bg-[#070d18]"><div className="mx-auto flex max-w-7xl flex-col gap-10 px-5 py-12 sm:px-8 md:flex-row md:items-end md:justify-between"><div><Link href="/"><Mark /></Link><p className="mt-4 max-w-xs text-xs leading-5 text-slate-500">{siteConfig.institute}</p></div><div className="flex flex-wrap gap-x-5 gap-y-3 text-xs text-slate-400">{navItems.map(([label, href]) => <Link key={href} href={href} className="hover:text-white">{label}</Link>)}<a href={siteConfig.instagram} target="_blank" rel="noreferrer" className="inline-flex items-center gap-1 hover:text-white"><Camera size={14} /> Instagram</a><a href={siteConfig.linkedin} target="_blank" rel="noreferrer" className="inline-flex items-center gap-1 hover:text-white"><BriefcaseBusiness size={14} /> LinkedIn</a></div><p className="font-mono text-[10px] text-slate-600">© 2026 ACM GRIET Student Chapter</p></div></footer> }
+export function Footer() { return <footer className="border-t border-white/10 bg-[#070d18]"><div className="mx-auto flex max-w-7xl flex-col gap-10 px-5 py-12 sm:px-8 md:flex-row md:items-end md:justify-between"><div><Link href="/"><Mark /></Link><p className="mt-4 max-w-xs text-xs leading-5 text-slate-500">{siteConfig.institute}</p></div><div className="flex flex-wrap gap-x-5 gap-y-3 text-xs text-slate-400">{navItems.map(([label, href]) => <Link key={href} href={href} className="hover:text-white">{label}</Link>)}<a href={siteConfig.instagram} target="_blank" rel="noreferrer" className="inline-flex items-center gap-1 hover:text-white"><FaInstagram size={14} /> Instagram</a><a href={siteConfig.linkedin} target="_blank" rel="noreferrer" className="inline-flex items-center gap-1 hover:text-white"><FaLinkedin size={14} /> LinkedIn</a><a href={`mailto:${siteConfig.email}`} className="inline-flex items-center gap-1 hover:text-white"><Mail size={14} /> Email</a></div><p className="font-mono text-[10px] text-slate-600">© 2026 ACM GRIET Student Chapter</p></div></footer> }
 
 export function EventGalleryArchive({
   filter,
@@ -330,6 +351,83 @@ export function Lightbox({
 
 export function SocialLinks() { return <div className="flex gap-3"><a aria-label="Instagram" href={siteConfig.instagram} target="_blank" rel="noreferrer" className="grid size-11 place-items-center rounded-full border border-white/10 text-slate-300 hover:border-acm hover:text-acm"><Camera size={18} /></a><a aria-label="LinkedIn" href={siteConfig.linkedin} target="_blank" rel="noreferrer" className="grid size-11 place-items-center rounded-full border border-white/10 text-slate-300 hover:border-acm hover:text-acm"><BriefcaseBusiness size={18} /></a></div> }
 
-export function Hero() { return <section className="hero-grid relative flex min-h-[780px] items-center px-5 pb-24 pt-40 sm:px-8"><div className="mx-auto w-full max-w-7xl"><div className="max-w-4xl"><h1 className="font-display text-[clamp(3.5rem,10vw,8.8rem)] font-bold leading-[1] tracking-[-.04em] text-white">Explore.<br /><span className="text-acm">Experiment.</span><br />Evolve.</h1><p className="mt-8 font-display text-lg font-semibold text-slate-300 sm:text-2xl">ACM GRIET Student Chapter</p><p className="mt-4 max-w-xl text-base leading-7 text-slate-400 sm:text-lg">Where technology meets curiosity, ideas turn into action, and students come together to build what&apos;s next.</p><div className="mt-10 flex flex-wrap items-center gap-4"><JoinButton /><Link href="/about" className="inline-flex items-center gap-2 rounded-full px-5 py-2.5 text-xs font-bold tracking-wide text-slate-300 transition hover:bg-white/5 hover:text-white">EXPLORE ACM <ChevronRight size={15} /></Link></div></div></div></section> }
+export function Hero() {
+  return (
+    <section className="hero-grid relative flex min-h-[85vh] items-center px-5 pb-12 pt-32 sm:px-8 sm:pb-16 sm:pt-40">
+      <div className="mx-auto w-full max-w-7xl">
+        <motion.div variants={staggerContainer} initial="hidden" animate="visible" className="max-w-3xl">
+          <motion.h1 variants={fadeUpVariants} className="font-display text-[clamp(3.5rem,10vw,8.8rem)] font-bold leading-[1] tracking-[-.04em] text-white">Explore.<br /><span className="text-acm">Experiment.</span><br />Evolve.</motion.h1>
+          <motion.p variants={fadeUpVariants} className="mt-8 font-display text-lg font-semibold text-slate-300 sm:text-2xl">ACM GRIET Student Chapter</motion.p>
+          <motion.p variants={fadeUpVariants} className="mt-4 max-w-xl text-base leading-7 text-slate-400 sm:text-lg">Where technology meets curiosity, ideas turn into action, and students come together to build what&apos;s next.</motion.p>
+          <motion.div variants={fadeUpVariants} className="mt-10 flex flex-wrap items-center gap-4">
+            <JoinButton />
+            <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
+              <Link href="/about" className="inline-flex items-center gap-2 rounded-full px-5 py-2.5 text-xs font-bold tracking-wide text-slate-300 transition hover:bg-white/5 hover:text-white">EXPLORE ACM <ChevronRight size={15} /></Link>
+            </motion.div>
+          </motion.div>
+        </motion.div>
+      </div>
+    </section>
+  )
+}
 
 export function ArrowLink({ href, children }: { href: string; children: React.ReactNode }) { return <Link href={href} className="inline-flex items-center gap-2 text-xs font-bold uppercase tracking-[.15em] text-white hover:text-acm">{children}<ArrowUpRight size={15} /></Link> }
+
+export function ContactSection() {
+  return (
+    <section id="contact" className="mx-auto max-w-7xl px-5 py-12 sm:px-8 sm:py-16">
+      <motion.div variants={staggerContainer} initial="hidden" whileInView="visible" viewport={{ once: true, margin: "-100px" }} className="grid gap-12 lg:grid-cols-2 lg:items-start">
+        <motion.div variants={fadeUpVariants}>
+          <SectionIntro eyebrow="Contact" title="Have a question?" description="Whether you want to learn more about our chapter, collaborate on an event, or just say hello — we'd love to hear from you." />
+        </motion.div>
+        <motion.div variants={fadeUpVariants} className="flex flex-col gap-10">
+          <div>
+            <p className="mb-4 font-mono text-[10px] font-semibold uppercase tracking-[.2em] text-slate-500">Connect with us</p>
+            <div className="grid gap-3 sm:grid-cols-2">
+              <a href={siteConfig.instagram} target="_blank" rel="noreferrer" className="group flex items-center gap-4 rounded-3xl bg-surface p-4 transition hover:bg-surface/80">
+                <div className="grid size-12 place-items-center rounded-2xl bg-white/5 text-acm transition group-hover:bg-acm group-hover:text-white"><FaInstagram size={20} /></div>
+                <div className="flex-1">
+                  <p className="text-sm font-semibold text-white">Instagram</p>
+                  <p className="font-mono text-[10px] text-slate-400">@acm_griet</p>
+                </div>
+                <ExternalLink size={16} className="text-slate-500 mr-2 transition group-hover:text-white" />
+              </a>
+              <a href={siteConfig.linkedin} target="_blank" rel="noreferrer" className="group flex items-center gap-4 rounded-3xl bg-surface p-4 transition hover:bg-surface/80">
+                <div className="grid size-12 place-items-center rounded-2xl bg-white/5 text-acm transition group-hover:bg-acm group-hover:text-white"><FaLinkedin size={20} /></div>
+                <div className="flex-1">
+                  <p className="text-sm font-semibold text-white">LinkedIn</p>
+                  <p className="font-mono text-[10px] text-slate-400">ACM GRIET</p>
+                </div>
+                <ExternalLink size={16} className="text-slate-500 mr-2 transition group-hover:text-white" />
+              </a>
+              <a href={`mailto:${siteConfig.email}`} className="group flex items-center gap-4 rounded-3xl bg-surface p-4 transition hover:bg-surface/80 sm:col-span-2">
+                <div className="grid size-12 place-items-center rounded-2xl bg-white/5 text-acm transition group-hover:bg-acm group-hover:text-white"><Mail size={20} /></div>
+                <div className="flex-1">
+                  <p className="text-sm font-semibold text-white">Email Us</p>
+                  <p className="font-mono text-[10px] text-slate-400">{siteConfig.email}</p>
+                </div>
+                <ExternalLink size={16} className="text-slate-500 mr-2 transition group-hover:text-white" />
+              </a>
+            </div>
+          </div>
+          <div>
+            <p className="mb-4 font-mono text-[10px] font-semibold uppercase tracking-[.2em] text-slate-500">Recruitment Support</p>
+            <div className="grid gap-3 sm:grid-cols-2">
+              {placeholderContacts.map((contact, index) => (
+                <div key={index} className="flex items-center gap-4 rounded-3xl border border-white/5 p-4">
+                  <div className="grid size-10 place-items-center rounded-full bg-white/5 text-acm"><Phone size={16} /></div>
+                  <div>
+                    <p className="font-mono text-xs font-medium text-white">{contact.number}</p>
+                    <p className="mt-0.5 text-[10px] text-slate-500">Placeholder</p>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+        </motion.div>
+      </motion.div>
+    </section>
+  )
+}
+
+

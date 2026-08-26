@@ -2,6 +2,8 @@
 
 import { FormEvent, useState } from 'react'
 import { Check, ChevronRight, Loader2 } from 'lucide-react'
+import { FaInstagram, FaLinkedin } from 'react-icons/fa'
+import { motion } from 'framer-motion'
 import { createClient } from '@/lib/supabase/client'
 import { PageShell } from '@/components/acm-site'
 
@@ -89,7 +91,6 @@ export default function RecruitmentPage() {
     const rollNumber = form.roll_number.trim().toUpperCase()
     const phone = form.phone.trim()
 
-    // 1. Required fields validation
     if (
       !fullName ||
       !collegeEmail ||
@@ -105,7 +106,6 @@ export default function RecruitmentPage() {
       return
     }
 
-    // 2. College email format validation (case-insensitive domain @grietcollege.com)
     const emailRegex = /^[a-zA-Z0-9._%+-]+@grietcollege\.com$/i
     const normalizedEmail = collegeEmail.toLowerCase()
     if (!emailRegex.test(collegeEmail)) {
@@ -113,26 +113,22 @@ export default function RecruitmentPage() {
       return
     }
 
-    // 3. Phone number format validation (10-digit Indian mobile)
     if (!/^[6-9]\d{9}$/.test(phone)) {
       setError('Please enter a valid 10-digit Indian mobile number.')
       return
     }
 
-    // 4. Roll number format validation (10 alphanumeric characters)
     if (!/^[a-zA-Z0-9]{10}$/.test(rollNumber)) {
       setError('Please enter a valid 10-character roll number (e.g. 24241A05A0).')
       return
     }
 
-    // 5. Email ↔ Roll number first 10 characters match (case-insensitive)
     const emailLocalPart = normalizedEmail.split('@')[0]
     if (emailLocalPart.slice(0, 10).toUpperCase() !== rollNumber.slice(0, 10).toUpperCase()) {
       setError('Your college email and roll number do not match. The first 10 characters of both must be the same.')
       return
     }
 
-    // Priority duplicate check
     if (form.second_priority && form.first_priority === form.second_priority) {
       setError('First and second priority teams cannot be the same.')
       return
@@ -141,7 +137,6 @@ export default function RecruitmentPage() {
     const supabase = createClient()
     setSubmitting(true)
 
-    // 6, 7, 8. Check uniqueness before insert if SELECT is available
     try {
       const { data: existingRecords } = await supabase
         .from('recruitments')
@@ -163,15 +158,12 @@ export default function RecruitmentPage() {
         }
         if (match.phone === phone) {
           setSubmitting(false)
-          setError('This mobile number has already been used. Please use a different mobile number.')
+          setError('This mobile number is already registered.')
           return
         }
       }
-    } catch {
-      // Proceed to INSERT if pre-check query fails or is restricted by RLS
-    }
+    } catch {}
 
-    // 9. Exact verified schema Supabase INSERT
     const payload = {
       full_name: fullName,
       college_email: normalizedEmail,
@@ -199,7 +191,7 @@ export default function RecruitmentPage() {
         } else if (details.includes('college_email')) {
           setError('This college email has already been used. Please use a different college email address.')
         } else if (details.includes('phone') || details.includes('recruitments_phone_key')) {
-          setError('This mobile number has already been used. Please use a different mobile number.')
+          setError('This mobile number is already registered.')
         } else {
           setError('This roll number has already been used. Please check your roll number and use a different one.')
         }
@@ -255,48 +247,51 @@ export default function RecruitmentPage() {
               </p>
             </div>
 
-            {/* STAY CONNECTED FOR MORE INFORMATION SECTION */}
-            <div className="mx-auto mt-10 max-w-xl rounded-2xl border border-white/10 bg-white/[.025] p-6 text-center sm:p-8">
-              <h3 className="font-display text-xl font-bold text-white">
-                Stay Connected for More Information 💙
+            <motion.div 
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.2, duration: 0.5 }}
+              className="mx-auto mt-10 max-w-xl rounded-3xl border border-white/5 bg-gradient-to-b from-white/[0.04] to-transparent p-6 text-center shadow-2xl shadow-black/50 backdrop-blur-md sm:p-10"
+            >
+              <h3 className="font-display text-2xl font-bold text-white tracking-tight">
+                Stay Connected 💙
               </h3>
 
-              <p className="mt-3 text-sm leading-6 text-slate-300">
+              <p className="mt-4 text-sm leading-relaxed text-slate-400">
                 Follow ACM GRIET on our social platforms to stay updated about upcoming events, announcements, recruitment updates, opportunities, and other activities.
               </p>
 
-              <div className="mt-6 flex flex-col gap-3 sm:flex-row sm:justify-center">
-                <a
+              <div className="mt-8 flex flex-col gap-4 sm:flex-row sm:justify-center">
+                <motion.a
+                  whileHover={{ scale: 1.05 }}
+                  whileTap={{ scale: 0.95 }}
                   href={INSTAGRAM_URL}
                   target="_blank"
                   rel="noreferrer"
-                  className="inline-flex items-center justify-center gap-3 rounded-full border border-white/15 bg-white/[.05] px-6 py-3 text-xs font-bold uppercase tracking-[.14em] text-white shadow-lg transition hover:border-acm hover:bg-acm/15 hover:text-white"
+                  className="group flex items-center justify-center gap-3 rounded-full bg-gradient-to-r from-pink-500 to-orange-400 p-[1px] shadow-lg transition-all"
                 >
-                  <img
-                    src="/images/acm-logo-rect.png"
-                    alt="ACM GRIET"
-                    className="h-5 w-auto object-contain shrink-0"
-                  />
-                  <span>FOLLOW US ON INSTAGRAM →</span>
-                </a>
+                  <div className="flex h-full w-full items-center justify-center gap-2 rounded-full bg-[#0a1120] px-6 py-3 transition-colors group-hover:bg-transparent">
+                    <FaInstagram size={18} className="text-white" />
+                    <span className="text-xs font-bold uppercase tracking-[.15em] text-white">Instagram</span>
+                  </div>
+                </motion.a>
 
-                <a
+                <motion.a
+                  whileHover={{ scale: 1.05 }}
+                  whileTap={{ scale: 0.95 }}
                   href={LINKEDIN_URL}
                   target="_blank"
                   rel="noreferrer"
-                  className="inline-flex items-center justify-center gap-3 rounded-full border border-white/15 bg-white/[.05] px-6 py-3 text-xs font-bold uppercase tracking-[.14em] text-white shadow-lg transition hover:border-acm hover:bg-acm/15 hover:text-white"
+                  className="group flex items-center justify-center gap-3 rounded-full bg-gradient-to-r from-blue-600 to-cyan-500 p-[1px] shadow-lg transition-all"
                 >
-                  <img
-                    src="/images/acm-logo-rect.png"
-                    alt="ACM GRIET"
-                    className="h-5 w-auto object-contain shrink-0"
-                  />
-                  <span>CONNECT WITH US ON LINKEDIN →</span>
-                </a>
+                  <div className="flex h-full w-full items-center justify-center gap-2 rounded-full bg-[#0a1120] px-6 py-3 transition-colors group-hover:bg-transparent">
+                    <FaLinkedin size={18} className="text-white" />
+                    <span className="text-xs font-bold uppercase tracking-[.15em] text-white">LinkedIn</span>
+                  </div>
+                </motion.a>
               </div>
-            </div>
+            </motion.div>
 
-            {/* CLOSING */}
             <div className="mt-10 border-t border-white/10 pt-8">
               <p className="font-display text-lg font-bold text-white">
                 Welcome to ACM GRIET 💙
@@ -539,7 +534,6 @@ export default function RecruitmentPage() {
               </div>
             </div>
 
-            {/* 1. WHATSAPP GROUP SECTION */}
             <div className="mt-10 rounded-2xl border border-white/10 bg-white/[.02] p-6 sm:p-8">
               <p className="font-mono text-[11px] font-bold uppercase tracking-[.2em] text-acm">
                 JOIN THE ACM GRIET WHATSAPP GROUP
@@ -574,7 +568,6 @@ export default function RecruitmentPage() {
               </div>
             </div>
 
-            {/* 2. JOINED WHATSAPP GROUP FIELD */}
             <div className="mt-8 border-t border-white/10 pt-8">
               <label className="mb-3 block text-xs font-semibold uppercase tracking-[.12em] text-slate-300">
                 HAVE YOU JOINED THE WHATSAPP GROUP? *

@@ -5,6 +5,7 @@ export const siteConfig = {
   recruitmentFormUrl: null as string | null,
   instagram: 'https://www.instagram.com/acm_griet',
   linkedin: 'https://www.linkedin.com/company/acm-griet/',
+  email: 'hello@acmgriet.com',
 } as const
 
 export type EventItem = {
@@ -156,7 +157,7 @@ export const placeholderContacts = [
 ]
 
 export const navItems = [
-  ['Home', '/'], ['About', '/about'], ['Events', '/events'], ['Gallery', '/gallery'], ['Contact', '/contact'],
+  ['Home', '/'], ['About', '/about'], ['Events', '/events'], ['Gallery', '/gallery'], ['Contact', '/#contact'],
 ] as const
 
 type EventItemWithTime = EventItem & { time?: string }
