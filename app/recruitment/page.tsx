@@ -23,12 +23,12 @@ const years = ['2nd Year', '3rd Year']
 const sections = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'Other']
 
 const teams = [
+  'Brand & Media Team',
   'Documentation Team',
   'Event Management Team',
-  'Graphics Team',
+  'Graphic Team',
   'Logistics Team',
-  'Publicity Team',
-  'Social Media Team',
+  'PR (Public Relations) Team',
   'Sponsorship Team',
   'Technical Team',
 ]
