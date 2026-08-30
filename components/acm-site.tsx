@@ -3,20 +3,20 @@
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 import { useEffect, useRef, useState } from 'react'
-import { motion } from 'framer-motion'
+import { motion, type Variants } from 'framer-motion'
 
-import { ArrowUpRight, BookOpen, Blocks, CalendarDays, ChevronRight, Circle, ExternalLink, Flag, Mail, Phone, Menu, Sparkles, Trophy, Users, X } from 'lucide-react'
+import { ArrowUpRight, BookOpen, Blocks, BriefcaseBusiness, CalendarDays, Camera, ChevronRight, Circle, ExternalLink, Flag, Mail, Phone, Menu, Sparkles, Trophy, Users, X } from 'lucide-react'
 import { benefits, events, journeyItems, navItems, placeholderContacts, recruitmentIsReady, siteConfig, type EventItem } from '@/lib/site-data'
 import { FaInstagram, FaLinkedin } from 'react-icons/fa'
 
 const iconMap = { BookOpen, Blocks, Trophy, Sparkles, Users, Flag }
 
-const fadeUpVariants = {
+const fadeUpVariants: Variants = {
   hidden: { opacity: 0, y: 24 },
   visible: { opacity: 1, y: 0, transition: { duration: 0.6, ease: [0.16, 1, 0.3, 1] } }
 }
 
-const staggerContainer = {
+const staggerContainer: Variants = {
   hidden: { opacity: 0 },
   visible: {
     opacity: 1,
@@ -57,7 +57,7 @@ export function JoinButton({ className = '' }: { className?: string }) {
       whileHover={{ scale: 1.05 }}
       whileTap={{ scale: 0.95 }}
       href="/recruitment"
-      className={`inline-flex items-center justify-center gap-2 rounded-full bg-acm px-5 py-2.5 text-xs font-bold tracking-wide text-white shadow-lg shadow-acm/20 transition hover:bg-acm-bright focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-cyan ${className}`}
+      className={`inline-flex items-center justify-center gap-2 rounded-full bg-acm px-6 py-3 text-xs font-bold tracking-wide text-white shadow-lg shadow-acm/20 transition-all duration-300 hover:bg-acm-bright hover:shadow-acm/40 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-cyan ${className}`}
     >
       <span>JOIN ACM</span>
       <ArrowUpRight size={15} />
@@ -70,10 +70,12 @@ export function SectionIntro({ eyebrow, title, description, align = 'left' }: { 
 
 export function MediaPlaceholder({ label, large = false, src, natural = false }: { label: string; large?: boolean; src?: string; natural?: boolean }) { if (src) return <div className={`media-image-frame overflow-hidden rounded-2xl border border-white/10 bg-[#101a2b] ${large ? 'min-h-80' : 'aspect-[1.35/1]'}`}><img src={src} alt={label} loading="lazy" className={`h-full w-full ${natural ? 'object-contain' : 'object-cover'}`} /></div>; return <div className={`media-placeholder relative flex items-center justify-center overflow-hidden rounded-2xl border border-white/10 bg-[#101a2b] ${large ? 'min-h-80' : 'aspect-[1.35/1]'}`}><div className="absolute inset-0 bg-[linear-gradient(120deg,transparent_0%,rgba(39,151,255,.08)_45%,transparent_70%)]" /><div className="relative flex flex-col items-center gap-3 px-6 text-center"><div className="grid size-12 place-items-center rounded-full border border-acm/30 bg-acm/10 text-acm"><Circle size={10} fill="currentColor" /></div><span className="font-mono text-[10px] uppercase tracking-[.18em] text-slate-500">{label}</span><span className="text-xs text-slate-600">{label.includes('NOVA') ? 'Event photographs will be added later' : 'Authentic event media will appear here'}</span></div></div> }
 
-export function EventCard({ event }: { event: EventItem }) { return <motion.article variants={fadeUpVariants} className="group flex h-full flex-col overflow-hidden rounded-3xl bg-surface transition duration-300 hover:bg-surface/80"><MediaPlaceholder
-  label={event.imageLabel}
-  src={event.coverImage}
-/><div className="flex flex-1 flex-col p-6 sm:p-8"><div className="mb-4 flex items-center gap-2 font-mono text-[10px] font-semibold uppercase tracking-[.16em] text-acm"><CalendarDays size={13} /> {event.date}</div><h3 className="font-display text-xl font-semibold leading-tight text-white">{event.title}</h3><p className="mt-3 flex-1 text-sm leading-6 text-slate-400">{event.description}</p><div className="mt-5 flex flex-wrap gap-2">{event.tags.map(tag => <span key={tag} className="rounded-full bg-white/5 px-3 py-1 font-mono text-[10px] uppercase tracking-wider text-slate-400">{tag}</span>)}</div></div></motion.article> }
+export function EventCard({ event }: { event: EventItem }) {
+  return <motion.article variants={fadeUpVariants} className="group flex h-full flex-col overflow-hidden rounded-3xl bg-surface transition duration-300 hover:bg-surface/80"><MediaPlaceholder
+    label={event.imageLabel}
+    src={event.coverImage}
+  /><div className="flex flex-1 flex-col p-6 sm:p-8"><div className="mb-4 flex items-center gap-2 font-mono text-[10px] font-semibold uppercase tracking-[.16em] text-acm"><CalendarDays size={13} /> {event.date}</div><h3 className="font-display text-xl font-semibold leading-tight text-white">{event.title}</h3><p className="mt-3 flex-1 text-sm leading-6 text-slate-400">{event.description}</p><div className="mt-5 flex flex-wrap gap-2">{event.tags.map(tag => <span key={tag} className="rounded-full bg-white/5 px-3 py-1 font-mono text-[10px] uppercase tracking-wider text-slate-400">{tag}</span>)}</div></div></motion.article>
+}
 
 export function EventGrid({ items = events }: { items?: EventItem[] }) { return <motion.div variants={staggerContainer} initial="hidden" whileInView="visible" viewport={{ once: true, margin: "-100px" }} className="grid gap-5 md:grid-cols-2 lg:grid-cols-3">{items.map(event => <EventCard key={event.id} event={event} />)}</motion.div> }
 
@@ -103,10 +105,10 @@ export function EventGalleryArchive({
       {shownEvents.map((event, eventIndex) => {
         const photos = event.images?.length
           ? event.images.map((src, index) => ({
-              eventId: event.id,
-              label: `${event.imageLabel} ${index + 1}`,
-              src,
-            }))
+            eventId: event.id,
+            label: `${event.imageLabel} ${index + 1}`,
+            src,
+          }))
           : []
 
         const hasPhotos = photos.length > 0
@@ -161,10 +163,10 @@ export function EventGalleryArchive({
                 >
                   <div className="relative overflow-hidden rounded-3xl bg-surface">
                     <img
-  src={photos[0].src}
-  alt={`${event.title} — main photograph`}
-  className="h-[360px] w-full object-cover transition duration-500 group-hover:scale-[1.015] sm:h-[500px]"
-/>
+                      src={photos[0].src}
+                      alt={`${event.title} — main photograph`}
+                      className="h-[360px] w-full object-cover transition duration-500 group-hover:scale-[1.015] sm:h-[500px]"
+                    />
 
                     {/* subtle hover overlay */}
                     <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-70" />
@@ -291,7 +293,7 @@ export function Lightbox({
               end !== null &&
               Math.abs(end - start) > 48
             ) {
-              ;(end < start ? onNext : onPrevious)?.()
+              ; (end < start ? onNext : onPrevious)?.()
             }
 
             touchStart.current = null
@@ -347,16 +349,16 @@ export function Lightbox({
       </div>
     </div>
   )
-} 
+}
 
 export function SocialLinks() { return <div className="flex gap-3"><a aria-label="Instagram" href={siteConfig.instagram} target="_blank" rel="noreferrer" className="grid size-11 place-items-center rounded-full border border-white/10 text-slate-300 hover:border-acm hover:text-acm"><Camera size={18} /></a><a aria-label="LinkedIn" href={siteConfig.linkedin} target="_blank" rel="noreferrer" className="grid size-11 place-items-center rounded-full border border-white/10 text-slate-300 hover:border-acm hover:text-acm"><BriefcaseBusiness size={18} /></a></div> }
 
 export function Hero() {
   return (
     <section className="hero-grid relative flex min-h-[85vh] items-center px-5 pb-12 pt-32 sm:px-8 sm:pb-16 sm:pt-40">
-      <div className="mx-auto w-full max-w-7xl">
-        <motion.div variants={staggerContainer} initial="hidden" animate="visible" className="max-w-3xl">
-          <motion.h1 variants={fadeUpVariants} className="font-display text-[clamp(3.5rem,10vw,8.8rem)] font-bold leading-[1] tracking-[-.04em] text-white">Explore.<br /><span className="text-acm">Experiment.</span><br />Evolve.</motion.h1>
+      <div className="mx-auto w-full max-w-7xl flex flex-col lg:flex-row items-center justify-between gap-12">
+        <motion.div variants={staggerContainer} initial="hidden" animate="visible" className="max-w-3xl lg:max-w-2xl">
+          <motion.h1 variants={fadeUpVariants} className="font-display text-[clamp(3.5rem,10vw,8.8rem)] font-bold leading-[1] tracking-[-.04em] text-white drop-shadow-sm">Explore.<br /><span className="text-transparent bg-clip-text bg-gradient-to-r from-acm via-acm-bright to-cyan">Experiment.</span><br />Evolve.</motion.h1>
           <motion.p variants={fadeUpVariants} className="mt-8 font-display text-lg font-semibold text-slate-300 sm:text-2xl">ACM GRIET Student Chapter</motion.p>
           <motion.p variants={fadeUpVariants} className="mt-4 max-w-xl text-base leading-7 text-slate-400 sm:text-lg">Where technology meets curiosity, ideas turn into action, and students come together to build what&apos;s next.</motion.p>
           <motion.div variants={fadeUpVariants} className="mt-10 flex flex-wrap items-center gap-4">
@@ -365,6 +367,19 @@ export function Hero() {
               <Link href="/about" className="inline-flex items-center gap-2 rounded-full px-5 py-2.5 text-xs font-bold tracking-wide text-slate-300 transition hover:bg-white/5 hover:text-white">EXPLORE ACM <ChevronRight size={15} /></Link>
             </motion.div>
           </motion.div>
+        </motion.div>
+
+        <motion.div
+          initial={{ opacity: 0, scale: 0.8 }}
+          animate={{ opacity: 1, scale: 1 }}
+          transition={{ duration: 0.8, delay: 0.3 }}
+          className="hidden lg:flex flex-1 justify-end items-center pointer-events-none -mt-32 lg:ml-12"
+        >
+          <img
+            src="/images/acm-logo-rect-transparent.png"
+            alt="ACM GRIET Logo"
+            className="w-full max-w-[500px] object-contain opacity-90 scale-y-110"
+          />
         </motion.div>
       </div>
     </section>
