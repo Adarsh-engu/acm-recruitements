@@ -21,12 +21,21 @@
   --radius-3xl: 1.75rem;
 }
 
-:root { color-scheme: dark; --background: #080f1c; --foreground: #f7fbff; --surface: #0d1728; --ink: #070d18; --acm: #2797ff; --acm-bright: #4aabff; --cyan: #73e5ff; --border: rgba(255,255,255,.1); --ring: #2797ff; }
+:root { color-scheme: dark; --background: #040914; --foreground: #f7fbff; --surface: #0b172a; --ink: #02040a; --acm: #2797ff; --acm-bright: #4aabff; --cyan: #73e5ff; --border: rgba(255,255,255,.08); --ring: #2797ff; }
 
 @layer base {
   * { @apply border-border; }
   html { background: var(--background); scroll-behavior: smooth; }
-  body { @apply bg-background text-foreground font-sans; margin: 0; }
+  body { 
+    @apply text-foreground font-sans; 
+    margin: 0; 
+    background-color: #040914;
+    background-image: 
+      radial-gradient(circle at 0% 0%, rgba(39, 151, 255, 0.15), transparent 40%),
+      radial-gradient(circle at 100% 100%, rgba(115, 229, 255, 0.12), transparent 40%),
+      linear-gradient(to bottom right, #040914, #0a162b);
+    background-attachment: fixed;
+  }
   ::selection { background: rgba(39,151,255,.35); color: white; }
   a, button { -webkit-tap-highlight-color: transparent; }
   button, a { @apply focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-acm focus-visible:ring-offset-2 focus-visible:ring-offset-ink; }
@@ -34,7 +43,11 @@
 
 @layer components {
   .label { @apply font-mono text-[10px] uppercase tracking-[.2em] text-slate-500; }
-  .hero-grid { background-color: #080f1c; background-image: radial-gradient(circle at 50% 0%, rgba(39, 151, 255, 0.12), transparent 50%); }
+  .hero-grid { 
+    background-color: transparent; 
+    background-image: 
+      radial-gradient(circle at 50% -20%, rgba(39, 151, 255, 0.25), transparent 60%); 
+  }
   .media-placeholder { background: rgba(255,255,255,0.02); }
   .media-image-frame { position: relative; aspect-ratio: 1.35 / 1; }
   .media-image-frame img { display: block; }
