@@ -355,8 +355,8 @@ export function SocialLinks() { return <div className="flex gap-3"><a aria-label
 
 export function Hero() {
   return (
-    <section className="hero-grid relative flex min-h-[85vh] items-center px-5 pb-12 pt-32 sm:px-8 sm:pb-16 sm:pt-40">
-      <div className="mx-auto w-full max-w-7xl flex flex-col lg:flex-row items-center justify-between gap-12">
+    <section className="hero-grid relative flex min-h-[85vh] items-center px-5 pb-12 pt-24 sm:px-8 sm:pb-16 sm:pt-40">
+      <div className="mx-auto w-full max-w-7xl flex flex-col lg:flex-row items-center justify-between gap-0 lg:gap-12">
         <motion.div variants={staggerContainer} initial="hidden" animate="visible" className="max-w-3xl lg:max-w-2xl">
           <motion.h1 variants={fadeUpVariants} className="font-display text-[clamp(3.5rem,10vw,8.8rem)] font-bold leading-[1] tracking-[-.04em] text-white drop-shadow-sm">Explore.<br /><span className="text-transparent bg-clip-text bg-gradient-to-r from-acm via-acm-bright to-cyan">Experiment.</span><br />Evolve.</motion.h1>
           <motion.p variants={fadeUpVariants} className="mt-8 font-display text-lg font-semibold text-slate-300 sm:text-2xl">ACM GRIET Student Chapter</motion.p>
@@ -369,16 +369,16 @@ export function Hero() {
           </motion.div>
         </motion.div>
 
-        <motion.div
-          initial={{ opacity: 0, scale: 0.8 }}
-          animate={{ opacity: 1, scale: 1 }}
+        <motion.div 
+          initial={{ opacity: 0, scale: 0.8 }} 
+          animate={{ opacity: 1, scale: 1 }} 
           transition={{ duration: 0.8, delay: 0.3 }}
-          className="hidden lg:flex flex-1 justify-end items-center pointer-events-none -mt-32 lg:ml-12"
+          className="flex flex-1 justify-center lg:justify-end items-center pointer-events-none order-first lg:order-last -mb-12 lg:mb-0 lg:-mt-32 lg:ml-12"
         >
-          <img
-            src="/images/acm-logo-rect-transparent.png"
-            alt="ACM GRIET Logo"
-            className="w-full max-w-[500px] object-contain opacity-90 scale-y-110"
+          <img 
+            src="/images/acm-logo-rect-transparent.png" 
+            alt="ACM GRIET Logo" 
+            className="w-full max-w-[500px] object-contain opacity-90 scale-y-110" 
           />
         </motion.div>
       </div>
