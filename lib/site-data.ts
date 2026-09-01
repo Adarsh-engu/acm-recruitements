@@ -157,7 +157,7 @@ export const placeholderContacts = [
 ]
 
 export const navItems = [
-  ['Home', '/'], ['About', '/about'], ['Events', '/events'], ['Gallery', '/gallery'], ['Team', '/team'], ['Contact', '/#contact'],
+  ['Home', '/'], ['About', '/about'], ['Events', '/events'], ['Gallery', '/gallery'], ['Crew', '/team'], ['Contact', '/#contact'],
 ] as const
 
 type EventItemWithTime = EventItem & { time?: string }

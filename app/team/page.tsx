@@ -18,7 +18,7 @@ export default function Team() {
         {/* Core Team */}
         <div className="mt-20">
           <div className="mb-10 text-center">
-            <h2 className="font-display text-2xl font-bold text-white">Core Crew</h2>
+            <h2 className="font-display text-2xl font-bold text-white">Core Committee</h2>
             <p className="mt-2 text-sm text-slate-400">The executive board.</p>
           </div>
 
