@@ -157,7 +157,7 @@ export const placeholderContacts = [
 ]
 
 export const navItems = [
-  ['Home', '/'], ['About', '/about'], ['Events', '/events'], ['Gallery', '/gallery'], ['Contact', '/#contact'],
+  ['Home', '/'], ['About', '/about'], ['Events', '/events'], ['Gallery', '/gallery'], ['Team', '/team'], ['Contact', '/#contact'],
 ] as const
 
 type EventItemWithTime = EventItem & { time?: string }
@@ -165,3 +165,47 @@ export type { EventItemWithTime }
 
 // Keep the event data easy to replace with GET /api/events later.
 export const apiShape = { collection: 'events', endpoints: ['GET /api/events', 'GET /api/events/:id'] } as const
+
+// --- Team Data ---
+export type TeamMember = {
+  id: string
+  name: string
+  role: string
+  category: 'core' | 'lead' | 'member'
+  domain?: string
+  imageUrl?: string
+  linkedinUrl?: string
+}
+
+export const teamMembers: TeamMember[] = [
+  // Core Team
+  { id: 'koushik', name: 'Koushik', role: 'Chair', category: 'core', imageUrl: '/images/Koushik.jpg', linkedinUrl: 'https://www.linkedin.com/in/koushik-tirumala-5a1170271/' },
+  { id: 'rajan', name: 'Rajan', role: 'Vice Chair', category: 'core', imageUrl: '/images/rajan.jpg', linkedinUrl: 'https://www.linkedin.com/in/rajan-bushe-3651773ba/' },
+  { id: 'bhavishya', name: 'Bhavishya', role: 'Secretary', category: 'core', imageUrl: '/images/Bhavishya.jpg', linkedinUrl: 'https://www.linkedin.com/in/bhavishya-karumuri-026732350/' },
+  { id: 'sai-karthikeya', name: 'Sai Karthikeya', role: 'Treasurer', category: 'core', imageUrl: '/images/karthikeya.jpg', linkedinUrl: 'https://www.linkedin.com/in/saikarthikeya-bukkaraju-7359a1327/' },//
+  { id: 'mahathi', name: 'Mahathi Sabbani', role: 'Webmaster', category: 'core', imageUrl: '/images/Mahathi.jpeg', linkedinUrl: 'https://www.linkedin.com/in/mahathi-sabbani-932982317/' },
+  { id: 'hasmitha', name: 'Hasmitha', role: 'Member Relation', category: 'core', imageUrl: '/images/hasmitha.jpg', linkedinUrl: 'https://www.linkedin.com/in/hasmitha-kotha/' },
+
+  // Leads
+  { id: 'adarsh', name: 'Adarsh Engu', role: 'Technical Lead', category: 'lead', domain: 'technical', imageUrl: '/images/Adarsh.png', linkedinUrl: 'https://www.linkedin.com/in/adarsh-engu-17mar07/' },
+  { id: 'sudeep', name: 'Sudeep Reddy', role: 'Brand & Media Lead', category: 'lead', domain: 'brand-media', imageUrl: '/images/Sudeep.jpg', linkedinUrl: 'https://www.linkedin.com/in/sudeep-reddy-9bb063335/' },
+  { id: 'bhanu-prakash', name: 'Bhanu Prakash', role: 'Event Management Lead', category: 'lead', domain: 'event-management', imageUrl: '/images/Bhanu.jpg', linkedinUrl: 'https://linkedin.com/in/bhanu-prakash' },
+  { id: 'harshini', name: 'Harshini', role: 'PR Lead', category: 'lead', domain: 'public-relations', imageUrl: '/images/Harshini.jpg', linkedinUrl: 'https://www.linkedin.com/in/sirigari-harshini-42510634a/' },
+  { id: 'srishanth', name: 'Uday Kiran', role: 'Sponsorship Lead', category: 'lead', domain: 'sponsorship', imageUrl: '/images/Uday.png', linkedinUrl: 'https://www.linkedin.com/in/uday-kiran-reddy-84a1ab3b9/' },
+  { id: 'abdus-sami', name: 'Abdus Sami', role: 'Graphic Lead', category: 'lead', domain: 'graphic', imageUrl: '/images/Abdus.jpg', linkedinUrl: 'https://www.linkedin.com/in/abdus-sami-183641332/' },
+  { id: 'vishwa', name: 'Vishwa', role: 'Logistics Lead', category: 'lead', domain: 'logistics', imageUrl: '/images/Vishwa.jpg', linkedinUrl: 'https://www.linkedin.com/in/vishwa-venkat-sana-4351653ba/' },
+  { id: 'priya', name: 'Priya', role: 'Documentation Lead', category: 'lead', domain: 'documentation', imageUrl: '/images/priya.jpg', linkedinUrl: 'https://www.linkedin.com/in/shivapriya-sheelam-7b69a7327/' },
+
+]
+
+export const teamDomains = [
+  { id: 'all', label: 'All' },
+  { id: 'event-management', label: 'Event Management' },
+  { id: 'brand-media', label: 'Brand & Media' },
+  { id: 'technical', label: 'Technical' },
+  { id: 'public-relations', label: 'Public Relations' },
+  { id: 'sponsorship', label: 'Sponsorship' },
+  { id: 'graphic', label: 'Graphic' },
+  { id: 'logistics', label: 'Logistics' },
+  { id: 'documentation', label: 'Documentation' },
+] as const
