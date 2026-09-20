@@ -200,6 +200,7 @@ export const teamMembers: TeamMember[] = [
 
 export const teamDomains = [
   { id: 'all', label: 'All' },
+  { id: 'arts', label: 'Arts' },
   { id: 'event-management', label: 'Event Management' },
   { id: 'brand-media', label: 'Brand & Media' },
   { id: 'technical', label: 'Technical' },
